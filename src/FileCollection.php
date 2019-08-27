@@ -2,8 +2,6 @@
 
 namespace Live\Collection;
 
-use phpDocumentor\Reflection\Types\Boolean;
-
 /**
  * File collection
  *
@@ -34,17 +32,17 @@ class FileCollection implements CollectionInterface
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function get(string $index, $defaultValue = null)
-    {
-        if (!$this->has($index)) {
-            return $defaultValue;
-        }
-
-        return $this->data[$index];
-    }
+//    /**
+//     * {@inheritDoc}
+//     */
+//    public function get(string $index, $defaultValue = null)
+//    {
+//        if (!$this->has($index)) {
+//            return $defaultValue;
+//        }
+//
+//        return $this->data[$index];
+//    }
 
     /**
      * {@inheritDoc}
@@ -60,28 +58,28 @@ class FileCollection implements CollectionInterface
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function has(string $index)
-    {
-        return array_key_exists($index, $this->data);
-    }
+//    /**
+//     * {@inheritDoc}
+//     */
+//    public function has(string $index)
+//    {
+//        return array_key_exists($index, $this->data);
+//    }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function count(): int
-    {
-        return count($this->data);
-    }
+//    /**
+//     * {@inheritDoc}
+//     */
+//    public function count(): int
+//    {
+//        return count($this->data);
+//    }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function clean()
-    {
-        $this->data = [];
-        $this->name = null;
-    }
+//    /**
+//     * {@inheritDoc}
+//     */
+//    public function clean()
+//    {
+//        $this->data = [];
+//        $this->name = null;
+//    }
 }
