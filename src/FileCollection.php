@@ -32,17 +32,17 @@ class FileCollection implements CollectionInterface
         }
     }
 
-//    /**
-//     * {@inheritDoc}
-//     */
-//    public function get(string $index, $defaultValue = null)
-//    {
-//        if (!$this->has($index)) {
-//            return $defaultValue;
-//        }
-//
-//        return $this->data[$index];
-//    }
+    /**
+     * {@inheritDoc}
+     */
+    public function get(string $index, $defaultValue = null)
+    {
+        if (!$this->has($index)) {
+            return $defaultValue;
+        }
+
+        return $this->data[$index];
+    }
 
     /**
      * {@inheritDoc}
@@ -51,35 +51,45 @@ class FileCollection implements CollectionInterface
     {
         if (is_array($value)) {
             for ($i = 0; $i < count($value); $i++) {
-                fwrite($this->data, $index . ' ' . $value[$i] . PHP_EOL);
+                if (is_bool($value[$i])) {
+                    $value[$i] = $value[$i] ? 'true' : 'false';
+                    fwrite($this->data, $index . ' ' . $value[$i] . PHP_EOL);
+                } else {
+                    fwrite($this->data, $index . ' ' . $value[$i] . PHP_EOL);
+                }
             }
         } else {
-            fwrite($this->data, $index . ' ' . $value . PHP_EOL);
+            if (is_bool($value)) {
+                $value = $value ? 'true' : 'false';
+                fwrite($this->data, $index . ' ' . $value . PHP_EOL);
+            } else {
+                fwrite($this->data, $index . ' ' . $value . PHP_EOL);
+            }
         }
     }
 
-//    /**
-//     * {@inheritDoc}
-//     */
-//    public function has(string $index)
-//    {
-//        return array_key_exists($index, $this->data);
-//    }
+    /**
+     * {@inheritDoc}
+     */
+    public function has(string $index)
+    {
+        return array_key_exists($index, $this->data);
+    }
 
-//    /**
-//     * {@inheritDoc}
-//     */
-//    public function count(): int
-//    {
-//        return count($this->data);
-//    }
+    /**
+     * {@inheritDoc}
+     */
+    public function count(): int
+    {
+        return count($this->data);
+    }
 
-//    /**
-//     * {@inheritDoc}
-//     */
-//    public function clean()
-//    {
-//        $this->data = [];
-//        $this->name = null;
-//    }
+    /**
+     * {@inheritDoc}
+     */
+    public function clean()
+    {
+        $this->data = [];
+        $this->name = null;
+    }
 }

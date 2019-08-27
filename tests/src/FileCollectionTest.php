@@ -54,6 +54,7 @@ class FileCollectionTest extends TestCase
         $collection->set('index3', true);
         $collection->set('index4', 6.5);
         $collection->set('index5', ['data']);
+        $collection->set('index6', [true, false, true, true, false, false]);
     }
 
 //    /**

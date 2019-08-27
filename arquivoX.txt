@@ -1,5 +1,11 @@
 index1 value
 index2 5
-index3 1
+index3 true
 index4 6.5
 index5 data
+index6 true
+index6 false
+index6 true
+index6 true
+index6 false
+index6 false
