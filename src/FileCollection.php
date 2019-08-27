@@ -2,6 +2,8 @@
 
 namespace Live\Collection;
 
+use phpDocumentor\Reflection\Types\Boolean;
+
 /**
  * File collection
  *
@@ -15,14 +17,21 @@ class FileCollection implements CollectionInterface
      *
      * @var array
      */
+    public $name;
     protected $data;
 
     /**
      * Constructor
      */
-    public function __construct()
+    public function __construct($filename = null)
     {
-        $this->data = [];
+        if (is_null($filename)) {
+            $this->data = [];
+            $this->name = null;
+        } else {
+            $this->data = fopen($_SERVER['DOCUMENT_ROOT'] . $filename . '.txt', 'w');
+            $this->name = $filename;
+        }
     }
 
     /**
@@ -42,7 +51,13 @@ class FileCollection implements CollectionInterface
      */
     public function set(string $index, $value)
     {
-        $this->data[$index] = $value;
+        if (is_array($value)) {
+            for ($i = 0; $i < count($value); $i++) {
+                fwrite($this->data, $index . ' ' . $value[$i] . PHP_EOL);
+            }
+        } else {
+            fwrite($this->data, $index . ' ' . $value . PHP_EOL);
+        }
     }
 
     /**
@@ -67,5 +82,6 @@ class FileCollection implements CollectionInterface
     public function clean()
     {
         $this->data = [];
+        $this->name = null;
     }
 }

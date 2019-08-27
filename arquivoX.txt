@@ -1,0 +1,5 @@
+index1 value
+index2 5
+index3 1
+index4 6.5
+index5 data
