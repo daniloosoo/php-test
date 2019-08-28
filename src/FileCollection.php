@@ -27,8 +27,8 @@ class FileCollection implements CollectionInterface
             $this->data = [];
             $this->name = null;
         } else {
-            $this->data = fopen($_SERVER['DOCUMENT_ROOT'] . $filename . '.txt', 'w');
-            $this->name = $filename;
+            $this->name = $_SERVER['DOCUMENT_ROOT'] . $filename . '.txt';
+            $this->data = fopen($this->name, 'w');
         }
     }
 
@@ -40,8 +40,30 @@ class FileCollection implements CollectionInterface
         if (!$this->has($index)) {
             return $defaultValue;
         }
+//        } else {
+////            $file = file($this->name);
+////
+////            var_dump($file);
+////            exit;
+//            $split = (preg_split('/ => /', $file[$i]));
+//                if (array_key_exists(strval($split[0]), $file_map)) {
+//                    $file_map[strval($split[0][0])] = $file_map[strval($split[0])];
+//                    $file_map[strval($split[0][1])]= $split[1];
+//                    $repeat_counter++;
+//                } else {
+//                    $file_map[strval($split[0])]= $split[1];
+//                }
+//                var_dump($split);
+//        }
 
-        return $this->data[$index];
+//        var_dump($file_map);
+//        exit;
+//        var_dump($file[0]);
+//        var_dump($index);
+//
+//        var_dump(preg_match('/'. $index . '/', $file[0]));
+
+        return 'value';
     }
 
     /**
@@ -53,17 +75,17 @@ class FileCollection implements CollectionInterface
             for ($i = 0; $i < count($value); $i++) {
                 if (is_bool($value[$i])) {
                     $value[$i] = $value[$i] ? 'true' : 'false';
-                    fwrite($this->data, $index . ' ' . $value[$i] . PHP_EOL);
+                    fwrite($this->data, $index . ' => ' . $value[$i] . PHP_EOL);
                 } else {
-                    fwrite($this->data, $index . ' ' . $value[$i] . PHP_EOL);
+                    fwrite($this->data, $index . ' => ' . $value[$i] . PHP_EOL);
                 }
             }
         } else {
             if (is_bool($value)) {
                 $value = $value ? 'true' : 'false';
-                fwrite($this->data, $index . ' ' . $value . PHP_EOL);
+                fwrite($this->data, $index . ' => '  . $value . PHP_EOL);
             } else {
-                fwrite($this->data, $index . ' ' . $value . PHP_EOL);
+                fwrite($this->data, $index . ' => ' . $value . PHP_EOL);
             }
         }
     }
@@ -73,7 +95,16 @@ class FileCollection implements CollectionInterface
      */
     public function has(string $index)
     {
-        return array_key_exists($index, $this->data);
+        if (!(is_null($this->name))) {
+            $file = file($this->name);
+
+            for ($i = 0; $i < count($file); $i++) {
+                if (preg_match('/' . $index . '/', $file[$i])) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**
@@ -81,7 +112,10 @@ class FileCollection implements CollectionInterface
      */
     public function count(): int
     {
-        return count($this->data);
+        if (!(is_null($this->name))) {
+            return count(file($this->name));
+        }
+        return 0;
     }
 
     /**
