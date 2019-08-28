@@ -39,31 +39,23 @@ class FileCollection implements CollectionInterface
     {
         if (!$this->has($index)) {
             return $defaultValue;
+        } else {
+            $file = file($this->name);
+
+            for ($i = 0; $i < count($file); $i++) {
+                $split[$i] = preg_split('/ => /', $file[$i]);
+            }
+
+            for ($j = 0; $j < count($split); $j++) {
+                if (in_array($index, $split[$j])) {
+                    $key = array_search($index, $split[$j]);
+                    $defaultValue = $split[$j][$key + 1];
+                    $defaultValue = preg_replace('/\s+/', '', $defaultValue);
+
+                    return $defaultValue;
+                }
+            }
         }
-//        } else {
-////            $file = file($this->name);
-////
-////            var_dump($file);
-////            exit;
-//            $split = (preg_split('/ => /', $file[$i]));
-//                if (array_key_exists(strval($split[0]), $file_map)) {
-//                    $file_map[strval($split[0][0])] = $file_map[strval($split[0])];
-//                    $file_map[strval($split[0][1])]= $split[1];
-//                    $repeat_counter++;
-//                } else {
-//                    $file_map[strval($split[0])]= $split[1];
-//                }
-//                var_dump($split);
-//        }
-
-//        var_dump($file_map);
-//        exit;
-//        var_dump($file[0]);
-//        var_dump($index);
-//
-//        var_dump(preg_match('/'. $index . '/', $file[0]));
-
-        return 'value';
     }
 
     /**
@@ -97,7 +89,6 @@ class FileCollection implements CollectionInterface
     {
         if (!(is_null($this->name))) {
             $file = file($this->name);
-
             for ($i = 0; $i < count($file); $i++) {
                 if (preg_match('/' . $index . '/', $file[$i])) {
                     return true;

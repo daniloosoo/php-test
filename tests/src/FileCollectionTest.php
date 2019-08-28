@@ -23,7 +23,8 @@ class FileCollectionTest extends TestCase
     public function objectCanBeConstructedWithNullParameter()
     {
         $collection = new FileCollection();
-        $this->assertEquals(null, $collection->name);
+
+        $this->assertNull($collection->name);
     }
 
     /**
@@ -36,7 +37,6 @@ class FileCollectionTest extends TestCase
         $collection = new FileCollection($name);
 
         $this->assertEquals($_SERVER['DOCUMENT_ROOT'] . $name . '.txt', $collection->name);
-        return $collection;
     }
 
     /**
@@ -49,28 +49,45 @@ class FileCollectionTest extends TestCase
         $name = 'arquivoX';
         $collection = new FileCollection($name);
 
+        $collection->set('index6', array(true, false, true, true, false, false));
+        $collection->set('index7', array(true, 'valuer', 1.25, true, 20, false));
         $collection->set('index1', 'value');
         $collection->set('index2', 5);
         $collection->set('index3', true);
         $collection->set('index4', 6.5);
         $collection->set('index5', ['data']);
-        $collection->set('index6', [true, false, true, true, false, false]);
-        $collection->set('index7', [true, 'valuer', 1.25, true, 20, false]);
 
         return $collection;
     }
 
-//    /**
-//     * @test
-//     * @depends dataCanBeAdded
-//     */
-//    public function dataCanBeRetrieved()
-//    {
-//        $name = 'arquivoX';
-//        $collection = new FileCollection($name);
-//
-//        $this->assertEquals('value', $collection->get('index1'));
-//    }
+    /**
+     * @test
+     * @depends dataCanBeAdded
+     */
+    public function addedItemShouldExistInCollection()
+    {
+        $name = 'arquivoX';
+        $collection = new FileCollection($name);
+
+        $collection->set('index1', 'value');
+
+        $this->assertTrue($collection->has('index1'));
+    }
+
+    /**
+     * @test
+     * @depends dataCanBeAdded
+     */
+    public function dataCanBeRetrieved()
+    {
+        $name = 'arquivoX';
+        $collection = new FileCollection($name);
+
+        $collection->set('index1', 'value');
+        $collection->set('index2', 'value2');
+
+        $this->assertEquals('value2', $collection->get('index2'));
+    }
 
     /**
      * @test
@@ -90,14 +107,15 @@ class FileCollectionTest extends TestCase
      */
     public function newCollectionShouldNotContainItems()
     {
-        $collection = new FileCollection();
+        $name = 'arquivoX';
+        $collection = new FileCollection($name);
 
         $this->assertEquals(0, $collection->count());
     }
 
     /**
      * @test
-     * @depends dataCanBeAdded
+     * @depends newCollectionShouldNotContainItems
      */
     public function collectionWithItemsShouldReturnValidCount()
     {
@@ -125,19 +143,5 @@ class FileCollectionTest extends TestCase
 
         $collection->clean();
         $this->assertEquals(0, $collection->count());
-    }
-
-    /**
-     * @test
-     * @depends dataCanBeAdded
-     */
-    public function addedItemShouldExistInCollection()
-    {
-        $name = 'arquivoX';
-        $collection = new FileCollection($name);
-
-        $collection->set('index', 'value');
-
-        $this->assertTrue($collection->has('index'));
     }
 }
