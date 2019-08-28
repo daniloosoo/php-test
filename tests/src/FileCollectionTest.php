@@ -54,6 +54,7 @@ class FileCollectionTest extends TestCase
         $collection->set('index1', 'value');
         $collection->set('index2', 5);
         $collection->set('index3', true);
+        $collection->set('index666', false);
         $collection->set('index4', 6.5);
         $collection->set('index5', ['data']);
 
@@ -88,6 +89,7 @@ class FileCollectionTest extends TestCase
         $this->assertEquals('value22', $collection->get('index245'));
         $this->assertEquals('6.5', $collection->get('index4'));
         $this->assertTrue($collection->get('index3'));
+        $this->assertFalse($collection->get('index666'));
     }
 
     /**
