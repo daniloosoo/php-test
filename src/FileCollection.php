@@ -52,6 +52,12 @@ class FileCollection implements CollectionInterface
                     $defaultValue = $split[$j][$key + 1];
                     $defaultValue = preg_replace('/\s+/', '', $defaultValue);
 
+                    if ($defaultValue == 'true') {
+                        $defaultValue = true;
+                    } elseif ($defaultValue == 'false') {
+                        $defaultValue = false;
+                    }
+
                     return $defaultValue;
                 }
             }

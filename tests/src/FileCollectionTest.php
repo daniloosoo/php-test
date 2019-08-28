@@ -80,13 +80,14 @@ class FileCollectionTest extends TestCase
      */
     public function dataCanBeRetrieved()
     {
-        $name = 'arquivoX';
-        $collection = new FileCollection($name);
+        $collection = self::dataCanBeAdded();
 
-        $collection->set('index1', 'value');
-        $collection->set('index2', 'value2');
+        $collection->set('index245', 'value22');
 
-        $this->assertEquals('value2', $collection->get('index2'));
+        $this->assertEquals('5', $collection->get('index2'));
+        $this->assertEquals('value22', $collection->get('index245'));
+        $this->assertEquals('6.5', $collection->get('index4'));
+        $this->assertTrue($collection->get('index3'));
     }
 
     /**
